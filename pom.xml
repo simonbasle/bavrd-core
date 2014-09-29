@@ -79,6 +79,12 @@
       <version>${vertx.version}</version>
       <scope>provided</scope>
     </dependency>
+    <!-- Guava, yum that's good -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
+    </dependency>
     <!--Test dependencies-->
     <dependency>
       <groupId>junit</groupId>
