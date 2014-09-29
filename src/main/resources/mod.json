@@ -1,7 +1,7 @@
 {
 
   // Java verticle
-  "main":"net.simonbasle.PingVerticle",
+  "main":"net.bavrd.core.MainBot",
 
   // In this example we also provide various other versions of the main verticle, you can uncomment this and
   // play around:
