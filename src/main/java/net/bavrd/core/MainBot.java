@@ -16,7 +16,7 @@ public class MainBot extends Verticle {
     JsonArray mods = container.config().getArray("modules");
     for (Object m : mods) {
       JsonObject mod = (JsonObject) m;
-      String modName = mod.getString("moduleName");
+      final String modName = mod.getString("moduleName");
       JsonObject modConfig = mod.getObject("moduleConf");
       String modRef = mod.getString("moduleRef");
 
@@ -24,7 +24,8 @@ public class MainBot extends Verticle {
       container.deployVerticle(modRef, modConfig, new Handler<AsyncResult<String>>() {
         @Override
         public void handle(AsyncResult<String> event) {
-          container.logger().info(event.result());
+          if (event.failed())
+            container.logger().error("Error deploying " + modName, event.cause());
         }
       });
     }
