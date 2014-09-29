@@ -1,0 +1,21 @@
+{
+    "botName": "bavrd",
+    "modules": [
+        {
+            "moduleName": "face",
+            "moduleRef": "net.bavrd.faces.SlackFace",
+            "moduleConf": {
+                "port": YOUR-SLACK-WEBHOOK-PORT-HERE,
+                "route": YOUR-SLACK-WEBHOOK-ROUTE-HERE,
+                "api_token": YOUR-SLACK-API-TOKEN-HERE
+            }
+        },
+        {
+            "moduleName": "echo",
+            "moduleRef": "net.bavrd.limbs.Echo",
+            "moduleConf": {
+                "sayFormat": "%u said '%m'"
+            }
+        }
+    ]
+}

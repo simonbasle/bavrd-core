@@ -108,6 +108,9 @@
         <groupId>io.vertx</groupId>
         <artifactId>vertx-maven-plugin</artifactId>
         <version>${maven.vertx.plugin.version}</version>
+        <configuration>
+          <configFile>bavrd.json</configFile>
+        </configuration>
         <!--
         You can specify extra config to the plugin as required here
         <configuration>

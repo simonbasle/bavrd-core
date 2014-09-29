@@ -16,11 +16,10 @@ BAVRD moduleRef entries are used to load the module's Vert.x Verticle (the code 
 A BAVRD configuration should also include a "botName" entry and modules should include one Face module and at most one Brain module (respectively to receive/send chat commands and to store/retrieve persistent data).
 
 For now, running the bot is a bit rough around the edges : you will need maven and [vert.x](http://vertx.io/install.html) installed:
- - build the project using maven : `mvn compile`
- - go into the build's directory (`target/classes`)
- - prepare a configuration file (see below), e.g. bavrd.json
- - run the bot as a Vert.x verticle : `vertx run net.bavrd.core.MainBot -conf bavrd.json`
- - you should see a log entry for the initialization of each module that you declared in the configuration
+ - build the project using maven : `mvn compile` (or build it at least once using your IDE of choice, eg CTRL-F9 in IntelliJ)
+ - prepare a configuration file named bavrd.json at the root of the project (see below or work from `bavrd-DEFAULT.json`)
+ - run the bot using the pre-configured vertx maven task : `mvn vertx:runMod`
+ - you should see a log entry for the initialization of each module that you declared in the configuration, provided corresponding module files are either in the src/java/ or resources/ paths.
 
 ##Example of a BAVRD configuration (bavrd.json):
 
@@ -48,7 +47,7 @@ For now, running the bot is a bit rough around the edges : you will need maven a
 
  - *`botName`* : when sending messages, under what name the BAVRD bot should act
  - *`modules.moduleName`* : for now, module names are only used internally and for logging
- - *`modules.moduleRef`* : see [vert.x verticles adressing reference](http://vertx.io/manual.html#running-vertx), for a java class it's a [FQN](# "Fully Qualified Name").
+ - *`modules.moduleRef`* : see [vert.x verticles adressing reference](http://vertx.io/manual.html#running-vertx), for a java class it's a [FQN](# "Fully Qualified Name") if in the `src/java` dir, or *xxx.java* source file if in `resources/` dir
  - **SlackFace module**:
  in the module configuration of the face below, the Slack face allows to listen on a specific port + route, and requires an API token, which are part of the module's configuration
 
