@@ -1,4 +1,4 @@
-package net.simonbasle.integration.java;
+package net.bavrd.integration.java;
 /*
  * Copyright 2013 Red Hat, Inc.
  *
@@ -22,10 +22,7 @@ import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.AsyncResultHandler;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.http.HttpClientResponse;
-import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.testtools.TestVerticle;
-import org.vertx.testtools.VertxAssert;
 
 import static org.vertx.testtools.VertxAssert.*;
 

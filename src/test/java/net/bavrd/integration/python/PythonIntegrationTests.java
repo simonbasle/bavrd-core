@@ -1,4 +1,4 @@
-package net.simonbasle;
+package net.bavrd.integration.python;
 /*
  * Copyright 2013 Red Hat, Inc.
  *
@@ -17,27 +17,24 @@ package net.simonbasle;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.platform.Verticle;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.vertx.testtools.ScriptClassRunner;
+import org.vertx.testtools.TestVerticleInfo;
 
-/*
-This is a simple Java verticle which receives `ping` messages on the event bus and sends back `pong` replies
+/**
+ * This is dummy JUnit test class which is used to run any Python test scripts as JUnit tests.
+ *
+ * The scripts by default go in src/test/resources.
+ *
+ * If you don't have any Python tests in your project you can delete this
+ *
+ * Do need to edit this file unless you want it to look for tests elsewhere
  */
-public class PingVerticle extends Verticle {
-
-  public void start() {
-
-
-    vertx.eventBus().registerHandler("ping-address", new Handler<Message<String>>() {
-      @Override
-      public void handle(Message<String> message) {
-        message.reply("pong!");
-        container.logger().info("Sent back pong");
-      }
-    });
-
-    container.logger().info("PingVerticle started");
-
+@TestVerticleInfo(filenameFilter=".+\\.py", funcRegex="def[\\s]+(test[^\\s(]+)")
+@RunWith(ScriptClassRunner.class)
+public class PythonIntegrationTests {
+  @Test
+  public void __vertxDummy() {
   }
 }

@@ -1,4 +1,9 @@
-package net.simonbasle.integration.python;
+package net.bavrd.unit;
+
+import org.junit.Test;
+
+import net.bavrd.core.MainBot;
+
 /*
  * Copyright 2013 Red Hat, Inc.
  *
@@ -16,25 +21,12 @@ package net.simonbasle.integration.python;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
+public class ExampleUnitTest {
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.vertx.testtools.ScriptClassRunner;
-import org.vertx.testtools.TestVerticleInfo;
-
-/**
- * This is dummy JUnit test class which is used to run any Python test scripts as JUnit tests.
- *
- * The scripts by default go in src/test/resources.
- *
- * If you don't have any Python tests in your project you can delete this
- *
- * Do need to edit this file unless you want it to look for tests elsewhere
- */
-@TestVerticleInfo(filenameFilter=".+\\.py", funcRegex="def[\\s]+(test[^\\s(]+)")
-@RunWith(ScriptClassRunner.class)
-public class PythonIntegrationTests {
   @Test
-  public void __vertxDummy() {
+  public void testVerticle() {
+    MainBot vert = new MainBot();
+
+    // do something with verticle
   }
 }

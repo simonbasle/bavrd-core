@@ -1,4 +1,4 @@
-package net.simonbasle.integration.groovy;
+package net.bavrd.integration.groovy;
 /*
  * Copyright 2013 Red Hat, Inc.
  *

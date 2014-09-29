@@ -34,7 +34,7 @@ function testHTTP() {
  This test deploys some arbitrary verticle - note that the call to testComplete() is inside the Verticle `SomeVerticle`
  */
 function testDeployArbitraryVerticle() {
-  container.deployVerticle("net.simonbasle.integration.java.SomeVerticle");
+  container.deployVerticle("net.bavrd.integration.java.SomeVerticle");
 }
 
 function testCompleteOnTimer() {

@@ -1,4 +1,4 @@
-package net.simonbasle.integration.javascript;
+package net.bavrd.integration.ruby;
 /*
  * Copyright 2013 Red Hat, Inc.
  *
@@ -23,17 +23,17 @@ import org.vertx.testtools.ScriptClassRunner;
 import org.vertx.testtools.TestVerticleInfo;
 
 /**
- * This is dummy JUnit test class which is used to run any JavaScript test scripts as JUnit tests.
+ * This is dummy JUnit test class which is used to run any Ruby test scripts as JUnit tests.
  *
  * The scripts by default go in src/test/resources.
  *
- * If you don't have any JavaScript tests in your project you can delete this
+ * If you don't have any Ruby tests in your project you can delete this
  *
  * Do need to edit this file unless you want it to look for tests elsewhere
  */
-@TestVerticleInfo(filenameFilter=".+\\.js", funcRegex="function[\\s]+(test[^\\s(]+)")
+@TestVerticleInfo(filenameFilter=".+\\.rb", funcRegex="def[\\s]+(test[^\\s]+)")
 @RunWith(ScriptClassRunner.class)
-public class JavaScriptIntegrationTests {
+public class RubyIntegrationTests {
   @Test
   public void __vertxDummy() {
   }

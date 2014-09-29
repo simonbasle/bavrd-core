@@ -5,4 +5,4 @@ def handler(msg):
     msg.reply('pong!')
     print 'sent back pong Python!'
 
-EventBus.register_handler('ping-address', handler=handler)
+EventBus.register_handler('bavrd-incoming', handler=handler)

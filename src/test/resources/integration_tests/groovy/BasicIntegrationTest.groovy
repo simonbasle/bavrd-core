@@ -2,7 +2,7 @@
  * Simple integration test which shows tests deploying other verticles, using the Vert.x API etc
  */
 
-import net.simonbasle.integration.java.SomeVerticle
+import net.bavrd.integration.java.SomeVerticle
 
 import static org.vertx.testtools.VertxAssert.*
 

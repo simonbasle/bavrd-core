@@ -1,4 +1,4 @@
-package net.simonbasle.integration.java;
+package net.bavrd.integration.java;
 /*
  * Copyright 2013 Red Hat, Inc.
  *

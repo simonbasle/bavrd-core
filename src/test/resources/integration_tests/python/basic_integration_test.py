@@ -29,7 +29,7 @@ def test_http():
 
 # This test deploys some arbitrary verticle - note that the call to testComplete() is inside the Verticle `SomeVerticle`
 def test_deploy_arbitrary_verticle():
-    vertx.deploy_verticle('net.simonbasle.integration.java.SomeVerticle')
+    vertx.deploy_verticle('net.bavrd.integration.java.SomeVerticle')
 
 # This demonstrates how tests are asynchronous - the timer does not fire until 1 second later -
 # which is almost certainly after the test method has completed.
