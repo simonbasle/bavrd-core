@@ -49,13 +49,12 @@ public class SlackFace extends Face {
                   String message = attributes.get("text");
                   message = message.replaceFirst(trigger, "").trim();
 
-                  JsonObject attributesJson = new JsonObject();
-                  attributesJson.putString(TOKEN_USER, attributes.get("user_name"));
-                  attributesJson.putString(TOKEN_CHANNEL, attributes.get("channel_id"));
-                  attributesJson.putString(TOKEN_MESSAGE, message);
-                  attributesJson.putString(TOKEN_AUTH, attributes.get("token"));
+                  //TODO verifications
+                  FaceMessage formatted = new FaceMessage(attributes.get("user_name"),
+                      attributes.get("channel_id"),
+                      message);
 
-                  vertx.eventBus().publish("bavrd-incoming", attributesJson);
+                  vertx.eventBus().publish("bavrd-incoming", formatted.asJson());
                   req.response().end();
                 }
               });
@@ -73,18 +72,16 @@ public class SlackFace extends Face {
     vertx.eventBus().registerHandler("bavrd-outgoing", new Handler<Message<JsonObject>>() {
       @Override
       public void handle(Message<JsonObject> m) {
-        String message = m.body().getString(TOKEN_MESSAGE);
-        String channelId = m.body().getString(TOKEN_CHANNEL);
-        String notification_token = m.body().getString(TOKEN_AUTH);
+        FaceMessage body = FaceMessage.decodeFrom(m.body());
 
         Escaper esc = UrlEscapers.urlFormParameterEscaper();
         StringBuffer payload = new StringBuffer()
             .append("token=")
             .append(esc.escape(token))
             .append("&channel=")
-            .append(esc.escape(channelId))
+            .append(esc.escape(body.channel))
             .append("&text=")
-            .append(esc.escape(message.trim()))
+            .append(esc.escape(body.message.trim()))
             .append("&username=")
             .append(esc.escape(botName));
 
