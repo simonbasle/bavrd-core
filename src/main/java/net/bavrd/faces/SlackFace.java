@@ -17,12 +17,17 @@ import net.bavrd.utils.VertxHandlers;
 
 public class SlackFace extends Face {
 
+  private int port;
+  private String route;
+  private String botName;
+  private String token;
+
   @Override
   public void startBavrd() {
-    final int port = container.config().getInteger("port", 8080);
-    final String route = container.config().getString("route", "/incoming/slack/");
-    final String botName = container.config().getString("botName", "bavrd");
-    final String token = container.config().getString("api_token", "");
+    port = container.config().getInteger("port", 8080);
+    route = container.config().getString("route", "/incoming/slack/");
+    botName = container.config().getString("botName", "bavrd");
+    token = container.config().getString("api_token", "");
 
     vertx.createHttpServer()
         .requestHandler(new Handler<HttpServerRequest>() {
