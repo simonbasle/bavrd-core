@@ -1,9 +1,9 @@
 # BAVRD-core
 This is the core module of the BAVRD project, pronounced like 'Bav-hard'.
 
-This project is an attempt at a modular chatbot, inspired by GitHub's Hubot.
+This project is an attempt at a modular chatbot, inspired by GitHub's Hubot, built upon the Vert.x platform thus allowing polyglot modules.
 
-It is built upon the Vert.x platform, hopefully allowing polyglot modules, with Gradle.
+##BAVRD is heavily work-in-progress!
 
 ##Usage
 The module starting point is MainBot. You can execute it on the Vert.x platform and pass it a json configuration file.
@@ -14,6 +14,13 @@ Each plugin entry, or bavrd module, must describe the name of the module, a Vert
 BAVRD moduleRef entries are used to load the module's Vert.x Verticle (the code of the module).
 
 A BAVRD configuration should also include a "botName" entry and modules should include one Face module and at most one Brain module (respectively to receive/send chat commands and to store/retrieve persistent data).
+
+For now, running the bot is a bit rough around the edges : you will need maven and [vert.x](http://vertx.io/install.html) installed:
+ - build the project using maven : `mvn compile`
+ - go into the build's directory (`target/classes`)
+ - prepare a configuration file (see below), e.g. bavrd.json
+ - run the bot as a Vert.x verticle : `vertx run net.bavrd.core.MainBot -conf bavrd.json`
+ - you should see a log entry for the initialization of each module that you declared in the configuration
 
 ##Example of a BAVRD configuration (bavrd.json):
 
@@ -41,7 +48,7 @@ A BAVRD configuration should also include a "botName" entry and modules should i
 
  - *`botName`* : when sending messages, under what name the BAVRD bot should act
  - *`modules.moduleName`* : for now, module names are only used internally and for logging
- - *`modules.moduleRef`* : see [vert.x verticles adressing reference](http://vertx.io/manual.html#running-vertx), for a java class it's a [FQN]("#", "Fully Qualified Name").
+ - *`modules.moduleRef`* : see [vert.x verticles adressing reference](http://vertx.io/manual.html#running-vertx), for a java class it's a [FQN](# "Fully Qualified Name").
  - **SlackFace module**:
  in the module configuration of the face below, the Slack face allows to listen on a specific port + route, and requires an API token, which are part of the module's configuration
 
@@ -59,4 +66,9 @@ A BAVRD configuration should also include a "botName" entry and modules should i
 
  `"sayFormat": "%u says '%m'"` : The configuration allows a "sayFormat" describing what echo will send back : `%u` is replaced by sender's name, `%m` by the original message after the command.
 
-##BAVRD is heavily work-in-progress!
+##BAVRD modules basics (creating a new Limb)
+What you probably want to do with your new shiny robot is to put together a custom script to make it react to command YOU have tailored...
+
+Wait no more, this is easy :) You can develop scripts for BAVRD in any language Vert.x supports, including Java, Ruby, Python and JavaScript !
+
+The basic principle is that the bot makes heavy use of the Vert.x eventBus : it will publish standardized messages on the `bavrd-incoming` address and expect modules to inspect the messages, find if there is a recognized command in it and if so, reply accordingly on the `bavrd-outgoing` event bus address. Said reply will in turn be processed in an ad hoc manner by the active Face and sent to the chatroom.
