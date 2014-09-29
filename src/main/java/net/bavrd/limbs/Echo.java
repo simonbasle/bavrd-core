@@ -27,28 +27,19 @@ public class Echo extends BavrdVerticle {
 
       @Override
       public void handle(Message<JsonObject> m) {
-        String message = m.body().getString(Face.TOKEN_MESSAGE);
-        Matcher matcher = SAY_PATTERN.matcher(message);
+        Face.FaceMessage fm = Face.FaceMessage.decodeFrom(m.body());
+        Matcher matcher = SAY_PATTERN.matcher(fm.message);
         if (matcher.matches()) {
-          say(
-              m.body().getString(Face.TOKEN_AUTH),
-              m.body().getString(Face.TOKEN_CHANNEL),
-              m.body().getString(Face.TOKEN_USER),
-              matcher.group(1)
-          );
+          say(fm.channel, fm.user, matcher.group(1));
         }
       }
     });
   }
 
-  protected void say(String token, String channel, String user, String params) {
+  protected void say(String channel, String user, String params) {
     String text = sayFormat.replaceAll("%u", user).replaceAll("%m", params);
-
-    JsonObject reply = new JsonObject()
-        .putString(Face.TOKEN_AUTH, token)
-        .putString(Face.TOKEN_CHANNEL, channel)
-        .putString(Face.TOKEN_MESSAGE, text);
-    vertx.eventBus().send("bavrd-outgoing", reply);
+    Face.FaceMessage reply = new Face.FaceMessage(Face.FaceMessage.SEND_TO_CHANNEL, channel, text);
+    vertx.eventBus().send("bavrd-outgoing", reply.asJson());
   }
 
   @Override

@@ -11,6 +11,8 @@ public abstract class Face extends BavrdVerticle {
 
   public static final class FaceMessage {
 
+    public static final String SEND_TO_CHANNEL = "BAVRD_BOT";
+
     private static final String TOKEN_USER = "user";
     private static final String TOKEN_CHANNEL = "channel";
     private static final String TOKEN_MESSAGE = "message";
