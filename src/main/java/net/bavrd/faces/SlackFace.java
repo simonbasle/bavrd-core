@@ -13,22 +13,9 @@ import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
 import net.bavrd.core.Face;
+import net.bavrd.utils.VertxHandlers;
 
 public class SlackFace extends Face {
-
-  private static final Handler<HttpClientResponse> NO_OP_HANDLER = new Handler<HttpClientResponse>() {
-    @Override
-    public void handle(HttpClientResponse httpClientResponse) {
-      //NO-OP
-      System.out.println(httpClientResponse.statusMessage());
-      httpClientResponse.bodyHandler(new Handler<Buffer>() {
-        @Override
-        public void handle(Buffer buffer) {
-          System.out.println(buffer.toString());
-        }
-      });
-    }
-  };
 
   @Override
   public void startBavrd() {
@@ -96,7 +83,18 @@ public class SlackFace extends Face {
             .append("&username=")
             .append(esc.escape(botName));
 
-        slack.post("/api/chat.postMessage", NO_OP_HANDLER)
+        Handler<HttpClientResponse> responseHandler;
+        if (container.logger().isDebugEnabled())
+          responseHandler = new Handler<HttpClientResponse>() {
+            @Override
+            public void handle(HttpClientResponse response) {
+              container.logger().debug(response.statusCode() + " : " + response.statusMessage());
+            }
+          };
+        else
+          responseHandler = VertxHandlers.noOpHandler();
+
+        slack.post("/api/chat.postMessage", responseHandler)
             .putHeader("Content-Type", "application/x-www-form-urlencoded")
             .end(payload.toString());
       }
