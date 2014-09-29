@@ -15,7 +15,7 @@ public abstract class BavrdVerticle extends Verticle {
    */
   @Override
   public void start() {
-    vertx.eventBus().registerHandler("bavrd-discover", new Handler<Message<String>>() {
+    vertx.eventBus().registerHandler(EventEnum.DISCOVER.vertxEndpoint, new Handler<Message<String>>() {
       @Override
       public void handle(Message<String> event) {
         Map<String, Object> jsonMap = new HashMap<>();

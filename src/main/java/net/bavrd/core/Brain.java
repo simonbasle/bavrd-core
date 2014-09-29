@@ -11,7 +11,7 @@ public abstract class Brain extends BavrdVerticle {
   public void startBavrd() {
     initBrain();
 
-    vertx.eventBus().registerHandler("bavrd-brain-get", new Handler<Message<String>>() {
+    vertx.eventBus().registerHandler(EventEnum.BRAIN_GET.vertxEndpoint, new Handler<Message<String>>() {
       @Override
       public void handle(Message<String> event) {
         Object value = get(event.body());
@@ -19,7 +19,7 @@ public abstract class Brain extends BavrdVerticle {
       }
     });
 
-    vertx.eventBus().registerHandler("bavrd-brain-put", new Handler<Message<Map.Entry<String, Object>>>() {
+    vertx.eventBus().registerHandler(EventEnum.BRAIN_PUT.vertxEndpoint, new Handler<Message<Map.Entry<String, Object>>>() {
       @Override
       public void handle(Message<Map.Entry<String, Object>> event) {
         Object oldValue = put(event.body().getKey(), event.body().getValue());
@@ -35,8 +35,8 @@ public abstract class Brain extends BavrdVerticle {
 
   @Override
   public String getHelp() {
-    return "bavrd-brain-get: get an object from memory using provided key"
-        +"\nbavrd-brain-put: commit an object to memory on the given key";
+    return EventEnum.BRAIN_GET + ": get an object from memory using provided key\n"
+        + EventEnum.BRAIN_PUT + ": commit an object to memory on the given key";
   }
 
   /**

@@ -12,6 +12,7 @@ import org.vertx.java.core.json.JsonObject;
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
+import net.bavrd.core.EventEnum;
 import net.bavrd.core.Face;
 import net.bavrd.utils.VertxHandlers;
 
@@ -54,7 +55,7 @@ public class SlackFace extends Face {
                       attributes.get("channel_id"),
                       message);
 
-                  vertx.eventBus().publish("bavrd-incoming", formatted.asJson());
+                  vertx.eventBus().publish(EventEnum.INCOMING.vertxEndpoint, formatted.asJson());
                   req.response().end();
                 }
               });
@@ -69,7 +70,7 @@ public class SlackFace extends Face {
         .setPort(443)
         .setHost("slack.com");
 
-    vertx.eventBus().registerHandler("bavrd-outgoing", new Handler<Message<JsonObject>>() {
+    vertx.eventBus().registerHandler(EventEnum.OUTGOING.vertxEndpoint, new Handler<Message<JsonObject>>() {
       @Override
       public void handle(Message<JsonObject> m) {
         FaceMessage body = FaceMessage.decodeFrom(m.body());

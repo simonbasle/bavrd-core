@@ -9,6 +9,7 @@ import org.vertx.java.core.json.JsonObject;
 
 import net.bavrd.core.BavrdComponent;
 import net.bavrd.core.BavrdVerticle;
+import net.bavrd.core.EventEnum;
 import net.bavrd.core.Face;
 
 public class Echo extends BavrdVerticle {
@@ -23,7 +24,7 @@ public class Echo extends BavrdVerticle {
   public void startBavrd() {
     sayFormat = container.config().getString("sayFormat", DEFAULT_SAY_FORMAT);
 
-    vertx.eventBus().registerHandler("bavrd-incoming", new Handler<Message<JsonObject>>() {
+    vertx.eventBus().registerHandler(EventEnum.INCOMING.vertxEndpoint, new Handler<Message<JsonObject>>() {
 
       @Override
       public void handle(Message<JsonObject> m) {
@@ -39,7 +40,7 @@ public class Echo extends BavrdVerticle {
   protected void say(String channel, String user, String params) {
     String text = sayFormat.replaceAll("%u", user).replaceAll("%m", params);
     Face.FaceMessage reply = new Face.FaceMessage(Face.FaceMessage.SEND_TO_CHANNEL, channel, text);
-    vertx.eventBus().send("bavrd-outgoing", reply.asJson());
+    vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
   }
 
   @Override
