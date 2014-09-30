@@ -23,6 +23,7 @@ For now, running the bot is a bit rough around the edges : you will need maven a
 
 ##Example of a BAVRD configuration (bavrd.json):
 
+```JSON
     {
         "botName": "bavrd",
         "modules": [
@@ -44,6 +45,7 @@ For now, running the bot is a bit rough around the edges : you will need maven a
             }
         ]
     }
+```
 
  - *`botName`* : when sending messages, under what name the BAVRD bot should act
  - *`modules.moduleName`* : for now, module names are only used internally and for logging
