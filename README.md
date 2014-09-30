@@ -51,15 +51,17 @@ For now, running the bot is a bit rough around the edges : you will need maven a
  - **SlackFace module**:
  in the module configuration of the face below, the Slack face allows to listen on a specific port + route, and requires an API token, which are part of the module's configuration
 
-    {
-       "moduleName": "face",
-       "moduleRef": "net.bavrd.faces.SlackFace",
-       "moduleConf": {
-           "port": 8080,
-           "route": "/slack/incoming",
-           "api_token": "1234"
-       }
-    }
+```JSON
+{
+   "moduleName": "face",
+   "moduleRef": "net.bavrd.faces.SlackFace",
+   "moduleConf": {
+       "port": 8080,
+       "route": "/slack/incoming",
+       "api_token": "1234"
+   }
+}
+```
 
  - **Echo module**: echo is a simple demo BAVRD module that reacts to commands, a LIMB of the bot. Echo repeats what is send to it through a "say XXX" command.
 
@@ -71,3 +73,5 @@ What you probably want to do with your new shiny robot is to put together a cust
 Wait no more, this is easy :) You can develop scripts for BAVRD in any language Vert.x supports, including Java, Ruby, Python and JavaScript !
 
 The basic principle is that the bot makes heavy use of the Vert.x eventBus : it will publish standardized messages on the `bavrd-incoming` address and expect modules to inspect the messages, find if there is a recognized command in it and if so, reply accordingly on the `bavrd-outgoing` event bus address. Said reply will in turn be processed in an ad hoc manner by the active Face and sent to the chatroom.
+
+Messages to/from the Face can be built using the FaceMessage class (and its `asJson()` and `decodeFrom(JsonObject)` static methods).
