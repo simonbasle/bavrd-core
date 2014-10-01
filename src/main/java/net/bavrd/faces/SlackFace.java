@@ -2,6 +2,8 @@ package net.bavrd.faces;
 
 import java.util.Collections;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.buffer.Buffer;
@@ -13,6 +15,7 @@ import org.vertx.java.core.json.JsonObject;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 
 import net.bavrd.core.EventEnum;
 import net.bavrd.core.Face;
@@ -76,18 +79,24 @@ public class SlackFace extends Face {
     vertx.eventBus().registerHandler(EventEnum.OUTGOING.vertxEndpoint, new Handler<Message<JsonObject>>() {
       @Override
       public void handle(Message<JsonObject> m) {
+        Escaper esc = UrlEscapers.urlFormParameterEscaper();
         FaceMessage body = FaceMessage.decodeFrom(m.body());
 
-        Escaper esc = UrlEscapers.urlFormParameterEscaper();
+        //sanitize the text and convert to Slack formatting
+        String formattedText = sanitizeRichText(body.message.trim());
+
         StringBuffer payload = new StringBuffer()
             .append("token=")
             .append(esc.escape(token))
-            .append("&channel=")
-            .append(esc.escape(body.channel))
             .append("&text=")
-            .append(esc.escape(body.message.trim()))
+            .append(esc.escape(formattedText))
             .append("&username=")
             .append(esc.escape(botName));
+
+        if (body.isReply && body.isPrivate)
+          payload.append("&channel=").append(esc.escape("@"+body.user));
+        else
+          payload.append("&channel=").append(esc.escape(body.channel));
 
         Handler<HttpClientResponse> responseHandler;
         if (container.logger().isDebugEnabled())
@@ -105,6 +114,29 @@ public class SlackFace extends Face {
             .end(payload.toString());
       }
     });
+  }
+
+  @Override
+  protected String formatBold(String text) {
+    return "*"+text+"*";
+  }
+
+  @Override
+  protected String formatItalic(String text) {
+    return "_"+text+"_";
+  }
+
+  @Override
+  protected String formatCode(String text) {
+    return "`"+text+"`";
+  }
+
+  @Override
+  protected String formatImg(String imageSrc, String imageAlt) {
+    //no image support in Slack, try to give a link to image with alt text as label if possible
+    if (imageAlt.length() > 0)
+      return "<"+imageSrc+"|"+imageAlt+">";
+    return imageSrc;
   }
 
   @Override
