@@ -57,8 +57,8 @@ public class Echo extends BavrdVerticle {
   @Override
   public java.util.Map<String, String> getHelp() {
     Map<String, String> help = new HashMap<>();
-    help.put("echo X", "will echo back X to the user");
-    help.put("say X", "will echo back X to the user, inside a phrase like \"user told me to say 'X'\"");
+    help.put("echo X", "will echo back <code>X</code> to the user");
+    help.put("say X", "will echo back <code>X</code> to the user, inside a phrase like <i>user told me to say 'X'</i>");
     return help;
   }
 }
