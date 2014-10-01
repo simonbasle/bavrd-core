@@ -77,3 +77,20 @@ Wait no more, this is easy :) You can develop scripts for BAVRD in any language 
 The basic principle is that the bot makes heavy use of the Vert.x eventBus : it will publish standardized messages on the `bavrd-incoming` address and expect modules to inspect the messages, find if there is a recognized command in it and if so, reply accordingly on the `bavrd-outgoing` event bus address. Said reply will in turn be processed in an ad hoc manner by the active Face and sent to the chatroom.
 
 Messages to/from the Face can be built using the FaceMessage class (and its `asJson()` and `decodeFrom(JsonObject)` static methods).
+
+###BAVRD contracts and conventions
+A BAVRD module listens for messages on `bavrd-incoming` and replies on `bavrd-outgoing`. Messages are exchanged in json format but they conform to the template expressed in FaceMessage, with the following fields : "userId", "userName", "channelId", "channelName", "message", "isReply", "isPrivate". FaceMessage methods allow you to correctly construct such messages in Java.
+
+Incoming messages are produced by the Face implementation and outgoing messages by the bavrd modules, aka Limbs. The fields have the following semantics :
+ - isReply : false for incoming messages, true for outgoing
+ - isPrivate : false/unused for incoming messages. For outgoing messages, set to true to respond to the user in a private direct message
+ - userId : the source of the command, in a machine-friendly form (in order to be able to send a direct message)
+ - userName : source of the command but in human-readable form. Modules can use this information to mention the user in their text response
+ - channelId : where did the command occur, in machine-friendly form used to know where to post the response (unless response isPrivate)
+ - channelName : the name (human-friendly) of the channel where the command was issued. Bot can use it to display this information in the response text
+ - message : for incoming messages, the command. for outgoing messages, the formatted response (can contain formatting html tags, see below)
+
+###Formatting messages
+BAVRD accepts that Limbs add formatting to their responses, in the form of a subset of html tags. Accepted tags are `B`, `I`, `CODE`, `BR`, `IMG` (with just a `SRC` and optionally an `ALT` attribute).
+
+All Face implementations must convert such tags into the equivalent format for their target chat platform. At the very least, **they should eliminate such tags if no equivalent formatting is available on the target chat platform**. See `Face.formatText()` method for a cleanup/formatting implementation in Java, along with the `formatXXX` concrete implementations in the `SlackFace` class.
