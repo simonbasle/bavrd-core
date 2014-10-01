@@ -25,6 +25,7 @@ public class SlackFace extends Face {
   private String route;
   private String botName;
   private String token;
+  private String icon;
 
   @Override
   public void startBavrd() {
@@ -32,6 +33,7 @@ public class SlackFace extends Face {
     route = container.config().getString("route", "/incoming/slack/");
     botName = container.config().getString("botName", "bavrd");
     token = container.config().getString("api_token", "");
+    icon = container.config().getString("bot_icon", null);
 
     vertx.createHttpServer()
         .requestHandler(new Handler<HttpServerRequest>() {
@@ -91,6 +93,14 @@ public class SlackFace extends Face {
             .append(esc.escape(formattedText))
             .append("&username=")
             .append(esc.escape(botName));
+
+        if (icon != null) {
+          if (icon.startsWith(":"))
+            payload.append("&icon_emoji=");
+          else
+            payload.append("&icon_url=");
+          payload.append(esc.escape(icon));
+        }
 
         if (body.isReply && body.isPrivate)
           payload.append("&channel=").append(esc.escape("@"+body.userId));
