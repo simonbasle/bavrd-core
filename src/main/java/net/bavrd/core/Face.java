@@ -3,8 +3,9 @@ package net.bavrd.core;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.safety.Whitelist;
-import org.vertx.java.core.json.JsonObject;
 
 public abstract class Face extends BavrdVerticle {
 
@@ -19,26 +20,52 @@ public abstract class Face extends BavrdVerticle {
     return BavrdComponent.FACE;
   }
 
-  protected String sanitizeRichText(String htmlBody) {
+  public String sanitizeRichText(String htmlBody) {
     String cleanHtml = Jsoup.clean(htmlBody, FORMATTED_TEXT_WHITELIST);
     Document bodyFragment = Jsoup.parseBodyFragment(cleanHtml);
     StringBuffer output = new StringBuffer();
-    for (Element e : bodyFragment.getAllElements()) {
-      if (e.tagName().equals("b")) {
-        output.append(formatBold(e.text()));
-      } else if (e.tagName().equals("br")) {
-        output.append(formatNewLine());
-      }  else if (e.tagName().equals("i")) {
-        output.append(formatItalic(e.text()));
-      }  else if (e.tagName().equals("code")) {
-        output.append(formatCode(e.text()));
-      }  else if (e.tagName().equals("img")) {
-        output.append(formatImg(e.attr("abs:src"), e.attr("alt")));
-      } else {
-        output.append(e.text());
-      }
+    for (Node n : bodyFragment.body().childNodes()) {
+      output.append(sanitize(n));
     }
     return output.toString();
+  }
+
+  private String sanitize(Node n) {
+    String output;
+    if (n instanceof Element) {
+      StringBuffer inner = new StringBuffer();
+      for (Node child : n.childNodes()) {
+        inner.append(sanitize(child));
+      }
+      String text = inner.toString();
+
+      Element e = (Element) n;
+      if (e.tagName().equals("b")) {
+        output = formatBold(text);
+      } else if (e.tagName().equals("br")) {
+        output = formatNewLine();
+      }  else if (e.tagName().equals("i")) {
+        output = formatItalic(text);
+      }  else if (e.tagName().equals("code")) {
+        output = formatCode(text);
+      }  else if (e.tagName().equals("img")) {
+        output = formatImg(e.attr("abs:src"), e.attr("alt"));
+      } else {
+        output = text;
+      }
+    } else if (n instanceof TextNode) {
+      output = ((TextNode) n).text();
+    } else
+      output = "";
+
+    //jsoup tends to add some whitespaces before and after <br>, let's get rid of them
+    if (n.nextSibling() instanceof Element && ((Element) n.nextSibling()).tagName().equals("br"))
+      output = output.replaceFirst("\\s+$", "");
+
+    if (n.previousSibling() instanceof  Element && ((Element) n.previousSibling()).tagName().equals("br"))
+      output = output.replaceFirst("^\\s+", "");
+
+    return output;
   }
 
   /**
