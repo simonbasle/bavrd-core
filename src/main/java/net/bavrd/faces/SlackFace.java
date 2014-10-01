@@ -54,11 +54,11 @@ public class SlackFace extends Face {
                   message = message.replaceFirst(trigger, "").trim();
 
                   //TODO verifications
-                  FaceMessage formatted = new FaceMessage(attributes.get("user_name"),
+                  FaceMessage incoming = FaceMessage.incoming(attributes.get("user_name"),
                       attributes.get("channel_id"),
                       message);
 
-                  vertx.eventBus().publish(EventEnum.INCOMING.vertxEndpoint, formatted.asJson());
+                  vertx.eventBus().publish(EventEnum.INCOMING.vertxEndpoint, incoming.asJson());
                   req.response().end();
                 }
               });

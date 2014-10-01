@@ -34,24 +34,19 @@ public class Echo extends BavrdVerticle {
         FaceMessage fm = FaceMessage.decodeFrom(m.body());
         Matcher sayMatcher = SAY_PATTERN.matcher(fm.message);
         if (sayMatcher.matches()) {
-          say(fm.channel, fm.user, sayMatcher.group(1), true);
+          String text = sayFormat.replaceAll("%u", fm.user).replaceAll("%m", sayMatcher.group(1));
+          FaceMessage reply = fm.reply(text);
+          vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
           return;
         }
 
         Matcher echoMatcher = ECHO_PATTERN.matcher(fm.message);
         if (echoMatcher.matches()) {
-          say(fm.channel, fm.user, echoMatcher.group(1), false);
+          FaceMessage reply = fm.reply(fm.message);
+          vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
         }
       }
     });
-  }
-
-  protected void say(String channel, String user, String message, boolean wrapMessage) {
-    String text = message;
-    if (wrapMessage)
-      text = sayFormat.replaceAll("%u", user).replaceAll("%m", message);
-    FaceMessage reply = new FaceMessage(FaceMessage.SEND_TO_CHANNEL, channel, text);
-    vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
   }
 
   @Override

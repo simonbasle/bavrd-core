@@ -29,7 +29,7 @@ public class Help extends BavrdVerticle {
           for(Map.Entry<String, String> e : helpMap.entrySet()) {
             help.append("\n*").append(e.getKey()).append("* - ").append(e.getValue());
           }
-          FaceMessage response = new FaceMessage(FaceMessage.SEND_TO_CHANNEL, fm.channel, help.toString());
+          FaceMessage response = fm.reply(help.toString());
           vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, response.asJson());
         }
       }
