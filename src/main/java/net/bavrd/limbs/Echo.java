@@ -34,7 +34,7 @@ public class Echo extends BavrdVerticle {
         FaceMessage fm = FaceMessage.decodeFrom(m.body());
         Matcher sayMatcher = SAY_PATTERN.matcher(fm.message);
         if (sayMatcher.matches()) {
-          String text = sayFormat.replaceAll("%u", fm.user).replaceAll("%m", sayMatcher.group(1));
+          String text = sayFormat.replaceAll("%u", fm.userName).replaceAll("%m", sayMatcher.group(1));
           FaceMessage reply = fm.reply(text);
           vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
           return;

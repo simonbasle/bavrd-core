@@ -52,11 +52,13 @@ public class SlackFace extends Face {
                   String trigger = attributes.get("trigger_word");
                   String message = attributes.get("text");
                   message = message.replaceFirst(trigger, "").trim();
+                  String userId = attributes.get("user_id");
+                  String userName = attributes.get("user_name");
+                  String channelName = attributes.get("channel_name");
+                  String channelId = attributes.get("channel_id");
 
                   //TODO verifications
-                  FaceMessage incoming = FaceMessage.incoming(attributes.get("user_name"),
-                      attributes.get("channel_id"),
-                      message);
+                  FaceMessage incoming = FaceMessage.incoming(userId, userName, channelId, channelName, message);
 
                   vertx.eventBus().publish(EventEnum.INCOMING.vertxEndpoint, incoming.asJson());
                   req.response().end();
@@ -91,9 +93,9 @@ public class SlackFace extends Face {
             .append(esc.escape(botName));
 
         if (body.isReply && body.isPrivate)
-          payload.append("&channel=").append(esc.escape("@"+body.user));
+          payload.append("&channel=").append(esc.escape("@"+body.userId));
         else
-          payload.append("&channel=").append(esc.escape(body.channel));
+          payload.append("&channel=").append(esc.escape(body.channelId));
 
         Handler<HttpClientResponse> responseHandler;
         if (container.logger().isDebugEnabled())
