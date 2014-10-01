@@ -79,12 +79,6 @@
       <version>${vertx.version}</version>
       <scope>provided</scope>
     </dependency>
-    <!-- Guava, yum that's good -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>18.0</version>
-    </dependency>
     <!--Test dependencies-->
     <dependency>
       <groupId>junit</groupId>
@@ -97,6 +91,17 @@
       <artifactId>testtools</artifactId>
       <version>${vertx.testtools.version}</version>
       <scope>test</scope>
+    </dependency>
+    <!-- Bavrd dependencies -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.7.2</version>
     </dependency>
   </dependencies>
 
