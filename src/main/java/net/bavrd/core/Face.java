@@ -36,7 +36,7 @@ public abstract class Face extends BavrdVerticle {
       result.putString(TOKEN_USER, user);
       result.putString(TOKEN_CHANNEL, channel);
       result.putString(TOKEN_MESSAGE, message);
-      return null;
+      return result;
     }
   }
 }
