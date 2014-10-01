@@ -25,7 +25,9 @@ public class Help extends BavrdVerticle {
         FaceMessage fm = FaceMessage.decodeFrom(m.body());
         if ("help".equalsIgnoreCase(fm.message)) {
           StringBuffer help = new StringBuffer();
-          help.append("<b>The following commands are available for <i>" + container.config().getString("botName") + "</i></b>:");
+          help.append("<b>Hello ").append(fm.userName)
+              .append(", I'm <i>").append(container.config().getString("botName")).append("</i>")
+              .append(" and I know the following commands</b> :");
 
           //get the global help map, deserialize each entry and format it for display
           ConcurrentSharedMap<String, String> globalHelpMap = vertx.sharedData().getMap(HelpUtils.SHARED_DATA_HELP);
@@ -50,6 +52,6 @@ public class Help extends BavrdVerticle {
 
   @Override
   public Map<String, String> getHelp() {
-    return Collections.singletonMap("help", "lists all registered commands of this bot");
+    return Collections.singletonMap("help", "lists all my registered commands");
   }
 }
