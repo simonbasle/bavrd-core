@@ -1,11 +1,7 @@
 package net.bavrd.core;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.platform.Verticle;
 
 public abstract class BavrdVerticle extends Verticle {
