@@ -2,8 +2,6 @@ package net.bavrd.faces;
 
 import java.util.Collections;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.buffer.Buffer;
@@ -15,7 +13,6 @@ import org.vertx.java.core.json.JsonObject;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 
 import net.bavrd.core.EventEnum;
 import net.bavrd.core.Face;
@@ -137,6 +134,11 @@ public class SlackFace extends Face {
     if (imageAlt.length() > 0)
       return "<"+imageSrc+"|"+imageAlt+">";
     return imageSrc;
+  }
+
+  @Override
+  protected String formatNewLine() {
+    return "\n";
   }
 
   @Override
