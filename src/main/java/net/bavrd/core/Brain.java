@@ -1,5 +1,6 @@
 package net.bavrd.core;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.vertx.java.core.Handler;
@@ -34,10 +35,7 @@ public abstract class Brain extends BavrdVerticle {
   }
 
   @Override
-  public String getHelp() {
-    return EventEnum.BRAIN_GET + ": get an object from memory using provided key\n"
-        + EventEnum.BRAIN_PUT + ": commit an object to memory on the given key";
-  }
+  public Map<String, String> getHelp() { return Collections.emptyMap(); }
 
   /**
    * initialize the BAVRD Brain instance

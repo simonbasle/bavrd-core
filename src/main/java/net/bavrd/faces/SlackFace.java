@@ -1,5 +1,7 @@
 package net.bavrd.faces;
 
+import java.util.Collections;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.buffer.Buffer;
@@ -105,12 +107,7 @@ public class SlackFace extends Face {
   }
 
   @Override
-  public String getName() {
-    return "Slack";
-  }
-
-  @Override
-  public String getHelp() {
-    return "Slack Integration";
+  public java.util.Map<String, String> getHelp() {
+    return Collections.emptyMap();
   }
 }

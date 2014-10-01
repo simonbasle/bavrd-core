@@ -10,35 +10,30 @@ import org.vertx.java.platform.Verticle;
 
 public abstract class BavrdVerticle extends Verticle {
 
+  public static final String SHARED_DATA_HELP = "bavrd-help";
+
   /**
    * default init behavior for a BAVRD Verticle : register a handler for "bavrd-discover" events
    */
   @Override
   public void start() {
-    vertx.eventBus().registerHandler(EventEnum.DISCOVER.vertxEndpoint, new Handler<Message<String>>() {
-      @Override
-      public void handle(Message<String> event) {
-        Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("moduleType", getType());
-        jsonMap.put("moduleHelp", getHelp());
-        event.reply(new JsonObject());
-      }
-    });
+    //add help (commands and their helptext) to the shared map of BAVRD commands
+    Map<String, String> help = getHelp();
+    if (!help.isEmpty())
+      vertx.sharedData().getMap(SHARED_DATA_HELP).putAll(help);
 
     startBavrd();
 
-    container.logger().info(getName() + " BAVRD module started");
+    String moduleName = container.config().getString("moduleName");
+    container.logger().info("[module started] " + moduleName + " - " + this.getClass().getCanonicalName());
   }
 
-  /** init method for the concrete BAVRD Verticle, other than bavrd-discover */
+  /** init method for the concrete BAVRD Verticle */
   public abstract void startBavrd();
-
-  /** @return the name of the BAVRD module */
-  public abstract String getName();
 
   /** @return the type of this module */
   public abstract BavrdComponent getType();
 
-  /** @return a help String (that could be shown to a user) to describe what commands this module reacts to  */
-  public abstract String getHelp();
+  /** @return a map of commands this module reacts to (command representation - command description) */
+  public abstract Map<String, String> getHelp();
 }

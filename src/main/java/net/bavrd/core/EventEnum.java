@@ -4,7 +4,6 @@ public enum EventEnum {
 
   INCOMING("bavrd-incoming"),
   OUTGOING("bavrd-outgoing"),
-  DISCOVER("bavrd-discover"),
   BRAIN_GET("bavrd-brain-get"),
   BRAIN_PUT("bavrd-brain-put");
 

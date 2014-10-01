@@ -1,5 +1,7 @@
 package net.bavrd.limbs;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,17 +46,12 @@ public class Echo extends BavrdVerticle {
   }
 
   @Override
-  public String getName() {
-    return "echo";
-  }
-
-  @Override
   public BavrdComponent getType() {
     return BavrdComponent.LIMB;
   }
 
   @Override
-  public String getHelp() {
-    return "'say X': will echo back X to the user";
+  public Map<String, String> getHelp() {
+    return Collections.singletonMap("say X", "will echo back X to the user");
   }
 }
