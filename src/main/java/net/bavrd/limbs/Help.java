@@ -18,7 +18,7 @@ public class Help extends BavrdVerticle {
 
   @Override
   public void startBavrd() {
-    EventBus eventBus = vertx.eventBus().registerHandler(EventEnum.INCOMING.vertxEndpoint, new Handler<Message<JsonObject>>() {
+    vertx.eventBus().registerHandler(EventEnum.INCOMING.vertxEndpoint, new Handler<Message<JsonObject>>() {
 
       @Override
       public void handle(Message<JsonObject> m) {
