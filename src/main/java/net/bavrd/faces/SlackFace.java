@@ -16,6 +16,7 @@ import com.google.common.net.UrlEscapers;
 
 import net.bavrd.core.EventEnum;
 import net.bavrd.core.Face;
+import net.bavrd.core.FaceMessage;
 import net.bavrd.utils.VertxHandlers;
 
 public class SlackFace extends Face {

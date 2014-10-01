@@ -2,8 +2,6 @@ package net.bavrd.limbs;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
@@ -14,7 +12,7 @@ import org.vertx.java.core.shareddata.ConcurrentSharedMap;
 import net.bavrd.core.BavrdComponent;
 import net.bavrd.core.BavrdVerticle;
 import net.bavrd.core.EventEnum;
-import net.bavrd.core.Face;
+import net.bavrd.core.FaceMessage;
 
 public class Help extends BavrdVerticle {
 
@@ -24,14 +22,14 @@ public class Help extends BavrdVerticle {
 
       @Override
       public void handle(Message<JsonObject> m) {
-        Face.FaceMessage fm = Face.FaceMessage.decodeFrom(m.body());
+        FaceMessage fm = FaceMessage.decodeFrom(m.body());
         if ("help".equalsIgnoreCase(fm.message)) {
           ConcurrentSharedMap<String, String> helpMap = vertx.sharedData().getMap(SHARED_DATA_HELP);
           StringBuffer help = new StringBuffer("The following commands are available for " + container.config().getString("botName") + ":");
           for(Map.Entry<String, String> e : helpMap.entrySet()) {
             help.append("\n*").append(e.getKey()).append("* - ").append(e.getValue());
           }
-          Face.FaceMessage response = new Face.FaceMessage(Face.FaceMessage.SEND_TO_CHANNEL, fm.channel, help.toString());
+          FaceMessage response = new FaceMessage(FaceMessage.SEND_TO_CHANNEL, fm.channel, help.toString());
           vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, response.asJson());
         }
       }

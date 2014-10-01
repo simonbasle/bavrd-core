@@ -12,7 +12,7 @@ import org.vertx.java.core.json.JsonObject;
 import net.bavrd.core.BavrdComponent;
 import net.bavrd.core.BavrdVerticle;
 import net.bavrd.core.EventEnum;
-import net.bavrd.core.Face;
+import net.bavrd.core.FaceMessage;
 
 public class Echo extends BavrdVerticle {
 
@@ -31,7 +31,7 @@ public class Echo extends BavrdVerticle {
 
       @Override
       public void handle(Message<JsonObject> m) {
-        Face.FaceMessage fm = Face.FaceMessage.decodeFrom(m.body());
+        FaceMessage fm = FaceMessage.decodeFrom(m.body());
         Matcher sayMatcher = SAY_PATTERN.matcher(fm.message);
         if (sayMatcher.matches()) {
           say(fm.channel, fm.user, sayMatcher.group(1), true);
@@ -50,7 +50,7 @@ public class Echo extends BavrdVerticle {
     String text = message;
     if (wrapMessage)
       text = sayFormat.replaceAll("%u", user).replaceAll("%m", message);
-    Face.FaceMessage reply = new Face.FaceMessage(Face.FaceMessage.SEND_TO_CHANNEL, channel, text);
+    FaceMessage reply = new FaceMessage(FaceMessage.SEND_TO_CHANNEL, channel, text);
     vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
   }
 
