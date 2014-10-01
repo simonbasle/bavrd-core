@@ -42,7 +42,7 @@ public class Echo extends BavrdVerticle {
 
         Matcher echoMatcher = ECHO_PATTERN.matcher(fm.message);
         if (echoMatcher.matches()) {
-          FaceMessage reply = fm.reply(fm.message);
+          FaceMessage reply = fm.reply(echoMatcher.group(1));
           vertx.eventBus().send(EventEnum.OUTGOING.vertxEndpoint, reply.asJson());
         }
       }
