@@ -1,13 +1,8 @@
 package net.bavrd.unit;
 
-import java.util.Map;
-
-import org.jsoup.Jsoup;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import net.bavrd.core.Face;
 import net.bavrd.faces.SlackFace;
 
 public class FormattedTextUnitTest {
@@ -24,6 +19,6 @@ public class FormattedTextUnitTest {
         + "\n*The following commands are available for _bot_*:"
         + "\n`command1` - description of command 1";
 
-    Assert.assertEquals(expectedOutput, sf.sanitizeRichText(inputString));
+    Assert.assertEquals(expectedOutput, sf.formatText(inputString));
   }
 }
