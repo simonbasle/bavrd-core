@@ -80,7 +80,7 @@ public class SlackFace extends Face {
         FaceMessage body = FaceMessage.decodeFrom(m.body());
 
         //sanitize the text and convert to Slack formatting
-        String formattedText = sanitizeRichText(body.message.trim());
+        String formattedText = formatText(body.message.trim());
 
         StringBuffer payload = new StringBuffer()
             .append("token=")

@@ -20,7 +20,7 @@ public abstract class Face extends BavrdVerticle {
     return BavrdComponent.FACE;
   }
 
-  public String sanitizeRichText(String htmlBody) {
+  public String formatText(String htmlBody) {
     String cleanHtml = Jsoup.clean(htmlBody, FORMATTED_TEXT_WHITELIST);
     Document bodyFragment = Jsoup.parseBodyFragment(cleanHtml);
     StringBuffer output = new StringBuffer();
